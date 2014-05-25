@@ -97,10 +97,10 @@ Note: Excluding subjectID and activity the variable names follow similar logic a
 - use cbind() function to combine the test_subject, ytest, and xtest data
 - use cbind() function to combine the train_subject, ytrain, and ytrain data
 - use rbind() function to combine the two cbind() tables of test and train data
-- install and activiate reshape2 package
-- create a variable from your data set that includes the names of the columns you want to mean for the tide data set (i.e. all columns except subjectID and activity)
-- use dcast function to get the mean of the features grouping by subjectID and activity
+- install and activiate data.table package
+- use lapply function to get the mean of the features grouping by subjectID and activity
+- write file to csv
 
 ## Result: 
 
-The above steps result in a tidy subset of the means of the features grouped by each subject and each activity
+The above steps result in a tidy dataset of the means of the features grouped by each subject and each activity

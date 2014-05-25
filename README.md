@@ -98,21 +98,29 @@ alltrain <- cbind(subjecttrain, ytrain, xtrain)
 
 alldata <- rbind(alltest, alltrain)
 
-**install reshape 2 package to run dcast function**
+**install data.table package to run lapply function**
 
-install.packages("reshape2")
+install.packages("data.table")
 
-**loads reshape2 package**
+**loads data.table package**
 
-library(reshape2)
+library(data.table)
 
-**creates a variable of all of the headers in your large data set excluding the subjectID and activity column; essentially just all of the recorded measurements**
+**use lapply function to compute mean of all varibales grouping by subjectID and activity**
 
-variables <- names(alldata[, 3:68])
+tidysubset <- alldata2[, lapply(.SD, mean), by = list(subjectID, activity)]
 
-*using dcast function creates a tidy data set of the means of the recorded values for each subject and each activity; otherwise said as the means of each subjects recorded meaurements for each activity**
+**order the newly created tidy subset of mean values**
 
-meanfeatures <- dcast(alldata, subjectID + activity ~ variables, mean)
+tidysubset <- tidysubset[order(tidysubset$subjectID), ]
+
+**set working directroy to root directory of UCI**
+
+setwd("../..")
+
+**export the tidy dataset as csv file**
+
+write.csv(tidysubset, file = "Tidy Subset.csv")
 
 ***Below is the code in full***
 
@@ -148,9 +156,11 @@ ytrain[ytrain == 6] <- "Laying"
 alltest <- cbind(subjecttest, ytest, xtest)
 alltrain <- cbind(subjecttrain, ytrain, xtrain)
 alldata <- rbind(alltest, alltrain)
-install.packages("reshape2")
-library(reshape2)
-variables <- names(alldata[, 3:68])
-meanfeatures <- dcast(alldata, subjectID + activity ~ variables, mean)
+install.packages("data.table")
+library(data.table)
+tidysubset <- alldata2[, lapply(.SD, mean), by = list(subjectID, activity)]
+tidysubset <- tidysubset[order(tidysubset$subjectID), ]
+setwd("../..")
+write.csv(tidysubset, file = "Tidy Subset.csv")
  
 ```

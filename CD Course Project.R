@@ -29,8 +29,9 @@ ytrain[ytrain == 6] <- "Laying"
 alltest <- cbind(subjecttest, ytest, xtest)
 alltrain <- cbind(subjecttrain, ytrain, xtrain)
 alldata <- rbind(alltest, alltrain)
-install.packages("reshape2")
-library(reshape2)
-variables <- names(alldata[, 3:68])
-meanfeatures <- dcast(alldata, subjectID + activity ~ variables, mean)
-
+install.packages("data.table")
+library(data.table)
+tidysubset <- alldata2[, lapply(.SD, mean), by = list(subjectID, activity)]
+tidysubset <- tidysubset[order(tidysubset$subjectID), ]
+setwd("../..")
+write.csv(tidysubset, file = "Tidy Subset.csv")
